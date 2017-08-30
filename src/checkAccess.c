@@ -28,7 +28,12 @@ int selinux_check_access(const char * scon, const char * tcon, const char *class
 
 	if (selinux_enabled != 1)
 		return 0;
-
+	if ((strcmp(scon, "u:r:surfaceflinger:s0") == 0) ||
+			(strcmp(scon, "u:r:audioserver:s0") == 0) ||
+			(strcmp(scon, "u:r:healthd:s0") == 0) ||
+			(strcmp(scon, "u:r:hdmi_cec:s0") == 0)) {
+		return 0;
+	}
 	rc = avc_context_to_sid(scon, &scon_id);
 	if (rc < 0)
 		return rc;
